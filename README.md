@@ -123,7 +123,8 @@ cd $HOME/getsentry/breakpad-tools/macos/build
 curl -X POST 'https://sentry.io/api/1730077/minidump/?sentry_key=77783407f1a341dfa70ffb8827c772e2' -F 050F6967-CA42-4473-A47E-D233742B5184.dmp=@mini.dmp
 ```
 
-
+WORKED..
+curl -X POST 'https://sentry.io/api/1730077/minidump/?sentry_key=77783407f1a341dfa70ffb8827c772e2' -F upload_file_minidump=@050F6967-CA42-4473-A47E-D233742B5184.dmp
 
 7. verify that minidump was received by Sentry  
 ?
