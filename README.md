@@ -99,13 +99,13 @@ make all
 ```
 
 ### Obtain debug symbols and upload them (a.k.a. DSYM or debug information files)
-> "Sentry Native is a wrapper around two most popular crash-reporting frameworks: Breakpad and Crashpad"
+> Note - Sentry Native is a wrapper around two most popular crash-reporting frameworks: Breakpad and Crashpad
 
 3. Go to https://github.com/getsentry/sentry-native/releases and download the latest `sentry-native-all.zip`  
 
 4. cd into extracted zip where the DSYM files are
 
-5. Upload dsym files (update org and project slug in CLI example)  
+5. Upload DSYM files (update org and project slug in CLI example)  
 `sentry-cli upload-dif -t dsym --no-bin . --org <sentry_org_name> --project <sentry_project_name>`  
 example:  
 ```
