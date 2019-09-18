@@ -76,29 +76,23 @@ might require changes to the makefiles.
 
 
 ---------------------------------
-```
-# IGNORE - is for attaching to an event
-curl -X POST \
-  'https://sentry.io/api/testorg-az/hardware-store-express/events/358b4cb012324028b8173a70848a3577/attachments/?sentry_key=772d35e856764ce9af8129e95cbd7ab2' \
-  -F upload_file_minidump=@mini.dmp
-```
 
-1. download release
-https://github.com/getsentry/sentrypad/releases  
+
+1. download release  
+go to https://github.com/getsentry/sentrypad/releases  
 click `sentry-native-all.zip`, not Source code (zip) or Source code (tar.gz)
 
-2. open downloaded release in terminal
+2. open downloaded release in terminal  
 `cd $HOME/<path_to>/sentry-native` is wherever you unzipped the downloaded release to
 
-3. upload dsym files (update org and project slug in CLI example)
+3. upload dsym files (update org and project slug in CLI example)  
 sentry-cli upload-dif -t dsym --no-bin .  --org testorg-az --project minidump-mac
 
 ```
 # uses breakpad-app on sentry.io
 sentry-cli upload-dif -t dsym --no-bin . --org testorg-az --project breakpad-app
-```
-outputs...
-```
+
+# output is:
 ➜  sentry-native sentry-cli upload-dif -t dsym --no-bin . --org testorg-az --project breakpad-app
 > Found 3 debug information files
 > Prepared debug information files for upload
@@ -110,15 +104,17 @@ outputs...
      OK 94bf873c-47a7-3bc0-7125-291390b4c5f1 (dump_syms_dwarf_data; x86 debug companion)
 ```
 
-4. verify that dsym files have been uploaded (update org and project slug in URL example)
-https://sentry.io/settings/testorg-az/projects/minidump-mac/debug-symbols/
-https://sentry.io/settings/testorg-az/projects/breakpad-app/debug-symbols/
+4. verify that dsym files have been uploaded (update org and project slug in URL example)  
+go to https://sentry.io/settings/testorg-az/projects/breakpad-app/debug-symbols/
 
 5. generate new minidump
+```
 ./crash
 
-6. upload minidump (update URL and filename in curl example) 
-curl -X POST 'https://sentry.io/api/1317411/minidump/?sentry_key=bb839727976a4b1c981f1de7a9232188'  -F upload_file_minidump=@mini.dmp
+# creates 050F6967-CA42-4473-A47E-D233742B5184.dmp in /build
+```
+6. upload minidump (update URL and filename in curl example)  
+(curl -X POST 'https://sentry.io/api/1317411/minidump/?sentry_key=bb839727976a4b1c981f1de7a9232188'  -F upload_file_minidump=@mini.dmp)
 
 ```
 cd $HOME/getsentry/breakpad-tools/macos/build
@@ -129,6 +125,19 @@ curl -X POST 'https://sentry.io/api/1730077/minidump/?sentry_key=77783407f1a341d
 
 
 
-7. verify that minidump was received by Sentry
+7. verify that minidump was received by Sentry  
+?
+8. verify that minidump was processed without any errors  
+?
 
-8. verify that minidump was processed without any errors
+
+
+--------------------------------------------------------------
+
+
+```
+# IGNORE - is for attaching to an event
+curl -X POST \
+  'https://sentry.io/api/testorg-az/hardware-store-express/events/358b4cb012324028b8173a70848a3577/attachments/?sentry_key=772d35e856764ce9af8129e95cbd7ab2' \
+  -F upload_file_minidump=@mini.dmp
+```
