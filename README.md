@@ -76,60 +76,66 @@ might require changes to the makefiles.
 
 
 ---------------------------------
+TODO: Makefile? Where mention that you need `sentry-cli`? Show output of curl -x Post (uploading the minidump)?
 
-
-1. download release  
-go to https://github.com/getsentry/sentrypad/releases  
-click `sentry-native-all.zip`, not Source code (zip) or Source code (tar.gz)
-
-2. open downloaded release in terminal  
-`cd $HOME/<path_to>/sentry-native` is wherever you unzipped the downloaded release to
-
-3. upload dsym files (update org and project slug in CLI example)  
-sentry-cli upload-dif -t dsym --no-bin .  --org testorg-az --project minidump-mac
-
+## Setup
+### Compile the 'crash' executable for producing a minidump
+1. 
 ```
-# uses breakpad-app on sentry.io
-sentry-cli upload-dif -t dsym --no-bin . --org testorg-az --project breakpad-app
+git clone git@github.com:getsentry/breakpad-tools.git
 
-# output is:
-➜  sentry-native sentry-cli upload-dif -t dsym --no-bin . --org testorg-az --project breakpad-app
+# <macos> | <linux> | <windows>
+cd breakpad-tools/macos
+make all
+```
+
+### Obtain debug symbols and upload them (a.k.a. DSYM or debug information files)
+> FYI "Sentry Native is a wrapper around two most popular crash-reporting frameworks: Breakpad and Crashpad"
+
+3. Go to https://github.com/getsentry/sentry-native/releases and download the latest `sentry-native-all.zip`  
+
+4. cd into extracted zip so you can access DSYM files
+
+5. Upload dsym files (update org and project slug in CLI example)  
+syntax: `sentry-cli upload-dif -t dsym --no-bin . --org <sentry_org_name> --project <sentry_project_name>`  
+example:  
+```
+sentry-native sentry-cli upload-dif -t dsym --no-bin . --org testorg-az --project breakpad-app
 > Found 3 debug information files
 > Prepared debug information files for upload
 > Uploaded 3 missing debug information files
 > File processing complete:
-
      OK fabe80cd-83a7-b83c-1a0d-5ff00aa22f22 (crashInMain; x86 executable)
      OK 047f1eb1-7c9e-d4b6-9b86-2b709398380f (crashduringload; x86 executable)
      OK 94bf873c-47a7-3bc0-7125-291390b4c5f1 (dump_syms_dwarf_data; x86 debug companion)
 ```
+6. Verify that dsym files have been uploaded (update org and project slug in URL example)  
+Go to https://sentry.io/settings/testorg-az/projects/breakpad-app/debug-symbols/
 
-4. verify that dsym files have been uploaded (update org and project slug in URL example)  
-go to https://sentry.io/settings/testorg-az/projects/breakpad-app/debug-symbols/
-
-5. generate new minidump
+### Produce & Upload a Minidump
+1. Produce minidump  
 ```
+cd breakpad-tools/macos/build
 ./crash
 
-# creates 050F6967-CA42-4473-A47E-D233742B5184.dmp in /build
-```
-6. upload minidump (update URL and filename in curl example)  
-(curl -X POST 'https://sentry.io/api/1317411/minidump/?sentry_key=bb839727976a4b1c981f1de7a9232188'  -F upload_file_minidump=@mini.dmp)
+# Check if a file like 050F6967-CA42-4473-A47E-D233742B5184.dmp was created
+ls
+050F6967-CA42-4473-A47E-D233742B5184.dmp
+```  
 
-```
-cd $HOME/getsentry/breakpad-tools/macos/build
 
-# uses breakpad-app on sentry.io
-curl -X POST 'https://sentry.io/api/1730077/minidump/?sentry_key=77783407f1a341dfa70ffb8827c772e2' -F 050F6967-CA42-4473-A47E-D233742B5184.dmp=@mini.dmp
+2. Upload minidump  
+syntax: `curl -X POST 'https://sentry.io/api/1317411/minidump/?sentry_key=bb839727976a4b1c981f1de7a9232188'  -F upload_file_minidump=@mini.dmp`  
+example:  
 ```
-
-WORKED..
+cd breakpad-tools/macos/build
 curl -X POST 'https://sentry.io/api/1730077/minidump/?sentry_key=77783407f1a341dfa70ffb8827c772e2' -F upload_file_minidump=@050F6967-CA42-4473-A47E-D233742B5184.dmp
+```
 
-7. verify that minidump was received by Sentry  
-?
-8. verify that minidump was processed without any errors  
-?
+3. Verify that minidump was received by Sentry  
+Go to sentry.io....Events...(image of events stream)
+4. Verify that minidump was processed without any errors  
+Go to sentry.io....Event...(image of it?)
 
 
 
