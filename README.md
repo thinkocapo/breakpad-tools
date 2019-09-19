@@ -76,7 +76,7 @@ might require changes to the makefiles.
 
 
 ------------------------------------------------------------------------------------------------------
-TODO: Makefile? Where mention that you need `sentry-cli`? Show output of curl -x Post (uploading the minidump)?
+TODO: mention that you need `sentry-cli`? Show output of curl -x Post (uploading the minidump)?
 TODO: `make all` is failing:
 ```
 ➜  macos git:(master) pwd
@@ -111,7 +111,12 @@ make all
 `sentry-cli upload-dif -t dsym --no-bin . --org <sentry_org_name> --project <sentry_project_name>`  
 example:  
 ```
-sentry-native sentry-cli upload-dif -t dsym --no-bin . --org testorg-az --project breakpad-app
+## FUTURE 
+## 09/19 IS BREAKING symbolication
+## sentry-cli upload-dif -—include-sources -t dsym --no-bin . --org testorg-az --project breakpad-app 
+
+sentry-cli upload-dif -t dsym --no-bin . --org testorg-az --project breakpad-app
+
 > Found 3 debug information files
 > Prepared debug information files for upload
 > Uploaded 3 missing debug information files
