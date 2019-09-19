@@ -86,7 +86,7 @@ make: *** No rule to make target `build/deps/breakpad/src/client/minidump_file_w
 ```
 
 
-------------------------------------------------------------------------------------------------------
+# Will's README
 ## Setup
 ### Compile the 'crash' executable for producing a minidump
 1. 
@@ -150,12 +150,3 @@ Go to sentry.io....Event...(image of it?)
 
 
 
---------------------------------------------------------------
-
-
-```
-# IGNORE - is for attaching to an event
-curl -X POST \
-  'https://sentry.io/api/testorg-az/hardware-store-express/events/358b4cb012324028b8173a70848a3577/attachments/?sentry_key=772d35e856764ce9af8129e95cbd7ab2' \
-  -F upload_file_minidump=@mini.dmp
-```
