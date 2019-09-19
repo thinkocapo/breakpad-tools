@@ -96,6 +96,8 @@ git clone git@github.com:getsentry/breakpad-tools.git
 # <macos> | <linux> | <windows>
 cd breakpad-tools/macos
 make all
+
+# note, the above command currently is failing, see next section for fix
 ```
 
 ### Obtain debug symbols and upload them (a.k.a. DSYM or debug information files)
